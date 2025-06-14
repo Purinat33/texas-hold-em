@@ -157,10 +157,6 @@ public class Hand {
         // "A" 2 3 4 5
         // idx 0 to 4 (Because right now A is currently at the back len-1)
 
-        if(){
-
-        }
-
         for (Card card: temp){
             if(card.getSuit() == Suit.HEARTS){
 
