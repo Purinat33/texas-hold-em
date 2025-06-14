@@ -4,11 +4,17 @@ import java.util.Collections;
 
 public class Hand {
 
+
+
     private ArrayList<Card> hand;
     public Hand(Deck d){
         this.hand = new ArrayList<>();
         this.hand.add(d.draw());
         this.hand.add(d.draw());
+    }
+
+    public void setHand(ArrayList<Card> hand) {
+        this.hand = hand;
     }
 
     public boolean checkRoyalFlush(){
