@@ -4,4 +4,5 @@ public enum Suit {
     HEARTS,
     DIAMONDS;
     // Suites have same hierarchy
+
 }

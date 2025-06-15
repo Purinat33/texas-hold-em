@@ -17,6 +17,11 @@ public class Hand {
         this.hand = hand;
     }
 
+    // Helper Function
+    public boolean isSameCard(Card card, Value v, Suit s){
+        return card.getValue().getCardValue() == v.getCardValue() && card.getSuit() == s;
+    }
+
     public boolean checkRoyalFlush(){
         int countRoyalFlush = 0;
         boolean aceFound = false, kingFound = false, tenFound = false, queenFound = false, jackFound = false;
@@ -149,25 +154,109 @@ public class Hand {
         return false;
     }
 
-    public boolean checkStraightFlush(){
+    public int checkStraightFlush(){
         // Ace to 5 is the lowest, but other than that you can probably use the corresponding value in the enum
         int countSF = 0;
         // https://stackoverflow.com/questions/530208/function-to-determine-whether-a-poker-hand-is-a-straight
         // Create a new arraylist for sorting hand
         ArrayList<Card> temp = new ArrayList<>(this.hand);
         Collections.sort(temp);
+        // Ace situation
         // Sorting by value will make Ace go to the back
         // We check for 10 J Q K "A"
         // idx len-5 to -2
         // if not we check
         // "A" 2 3 4 5
-        // idx 0 to 4 (Because right now A is currently at the back len-1)
+        // idx 0 to 3 (Because right now A is currently at the back @ len-1)
 
-        // Higher count
-        for (Card card: temp){
-
+        int size = temp.size();
+        Suit suitToCheck = Suit.HEARTS;
+        if(
+                isSameCard(temp.get(size-5), Value.TEN, suitToCheck) &&
+                isSameCard(temp.get(size-4), Value.JACK, suitToCheck) &&
+                isSameCard(temp.get(size-3), Value.QUEEN, suitToCheck) &&
+                isSameCard(temp.get(size-2), Value.KING, suitToCheck) &&
+                isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
+        ){
+            return 99;
         }
-        return false;
+        suitToCheck = Suit.DIAMONDS;
+        if(
+                isSameCard(temp.get(size-5), Value.TEN, suitToCheck) &&
+                        isSameCard(temp.get(size-4), Value.JACK, suitToCheck) &&
+                        isSameCard(temp.get(size-3), Value.QUEEN, suitToCheck) &&
+                        isSameCard(temp.get(size-2), Value.KING, suitToCheck) &&
+                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
+        ){
+            return 99;
+        }
+        suitToCheck = Suit.SPADES;
+        if(
+                isSameCard(temp.get(size-5), Value.TEN, suitToCheck) &&
+                        isSameCard(temp.get(size-4), Value.JACK, suitToCheck) &&
+                        isSameCard(temp.get(size-3), Value.QUEEN, suitToCheck) &&
+                        isSameCard(temp.get(size-2), Value.KING, suitToCheck) &&
+                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
+        ){
+            return 99;
+        }
+        suitToCheck = Suit.CLUBS;
+        if(
+                isSameCard(temp.get(size-5), Value.TEN, suitToCheck) &&
+                        isSameCard(temp.get(size-4), Value.JACK, suitToCheck) &&
+                        isSameCard(temp.get(size-3), Value.QUEEN, suitToCheck) &&
+                        isSameCard(temp.get(size-2), Value.KING, suitToCheck) &&
+                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
+        ){
+            return 99;
+        }
+
+        // Lower bound
+        suitToCheck = Suit.HEARTS;
+        if(
+                isSameCard(temp.get(0), Value.TWO, suitToCheck) &&
+                        isSameCard(temp.get(1), Value.THREE, suitToCheck) &&
+                        isSameCard(temp.get(2), Value.FOUR, suitToCheck) &&
+                        isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
+                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
+        ){
+            return 44;
+        }
+        suitToCheck = Suit.DIAMONDS;
+        if(
+                isSameCard(temp.get(0), Value.TWO, suitToCheck) &&
+                        isSameCard(temp.get(1), Value.THREE, suitToCheck) &&
+                        isSameCard(temp.get(2), Value.FOUR, suitToCheck) &&
+                        isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
+                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
+        ){
+            return 44;
+        }
+        suitToCheck = Suit.SPADES;
+        if(
+                isSameCard(temp.get(0), Value.TWO, suitToCheck) &&
+                        isSameCard(temp.get(1), Value.THREE, suitToCheck) &&
+                        isSameCard(temp.get(2), Value.FOUR, suitToCheck) &&
+                        isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
+                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
+        ){
+            return 44;
+        }
+        suitToCheck = Suit.CLUBS;
+        if(
+                isSameCard(temp.get(0), Value.TWO, suitToCheck) &&
+                        isSameCard(temp.get(1), Value.THREE, suitToCheck) &&
+                        isSameCard(temp.get(2), Value.FOUR, suitToCheck) &&
+                        isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
+                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
+        ){
+            return 44;
+        }
+
+        // Now for non Ace case
+
+
+        return -1;
     }
 
     public int calculateHand(Card f1, Card f2, Card f3, Card t1, Card r1){
@@ -186,8 +275,8 @@ public class Hand {
         }
         // -----------------------------------------------
         // Straight Flush
-        if(checkStraightFlush()){
-            return 50;
+        if(checkStraightFlush() != -1){
+            return checkStraightFlush();
         }
 
 

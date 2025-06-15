@@ -31,6 +31,7 @@ public class Card implements Comparable<Card> {
 
     @Override
     public int compareTo(Card o) {
+        // Not checking suit for this one, when we need suit comparison we will do those manually
         return Integer.compare(this.getValue().getCardValue(), o.getValue().getCardValue());
     }
 }
