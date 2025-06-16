@@ -22,6 +22,7 @@ public class Hand {
         return card.getValue().getCardValue() == v.getCardValue() && card.getSuit() == s;
     }
 
+
     public boolean checkRoyalFlush(){
         int countRoyalFlush = 0;
         boolean aceFound = false, kingFound = false, tenFound = false, queenFound = false, jackFound = false;
@@ -155,8 +156,6 @@ public class Hand {
     }
 
     public int checkStraightFlush(){
-        // Ace to 5 is the lowest, but other than that you can probably use the corresponding value in the enum
-        int countSF = 0;
         // https://stackoverflow.com/questions/530208/function-to-determine-whether-a-poker-hand-is-a-straight
         // Create a new arraylist for sorting hand
         ArrayList<Card> temp = new ArrayList<>(this.hand);
@@ -220,7 +219,7 @@ public class Hand {
                         isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
                         isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
         ){
-            return 44;
+            return 15;
         }
         suitToCheck = Suit.DIAMONDS;
         if(
@@ -230,7 +229,7 @@ public class Hand {
                         isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
                         isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
         ){
-            return 44;
+            return 15;
         }
         suitToCheck = Suit.SPADES;
         if(
@@ -240,7 +239,7 @@ public class Hand {
                         isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
                         isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
         ){
-            return 44;
+            return 15;
         }
         suitToCheck = Suit.CLUBS;
         if(
@@ -250,10 +249,28 @@ public class Hand {
                         isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
                         isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
         ){
-            return 44;
+            return 15;
         }
 
-        // Now for non Ace case
+        //Non Ace case
+        // Check if an array is consecutive logic
+//        int countSF = 1; // If 5 then yes. Started at 1 because the first card of the count is already there
+//        for(int i = 1; i < size; i++){
+//            if(temp.get(i).getValue().getCardValue() == temp.get(i-1).getValue().getCardValue()+1 && temp.get(i).getSuit() == temp.get(i-1).getSuit()){
+//                countSF++;
+//            }
+//            else{
+//                break;
+//            }
+//        }
+//        if(countSF >= 5) return 50;
+
+        // Go backward for higher to lower score
+        // Size-1 to Size-5
+        // Size-2 to Size-6
+        // Size-3 to Size-7
+        // Can probably do it manually
+        // TODO: Implement this ^
 
 
         return -1;
