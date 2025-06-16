@@ -128,5 +128,35 @@ public class CardTest {
         assertEquals(25, testHand.checkStraightFlush());
     }
 
+    @Test
+    public void testFourOfAKind(){
+        Hand testHand = new Hand(new Deck());
+        ArrayList<Card> cards = new ArrayList<>();
+
+        // 5 A 5 K 4 5 5
+        cards.add(new Card(Value.FIVE, Suit.SPADES));
+        cards.add(new Card(Value.ACE, Suit.SPADES));
+        cards.add(new Card(Value.FIVE, Suit.CLUBS));
+        cards.add(new Card(Value.KING, Suit.SPADES));
+        cards.add(new Card(Value.FOUR, Suit.SPADES));
+        cards.add(new Card(Value.FIVE, Suit.DIAMONDS));
+        cards.add(new Card(Value.FIVE, Suit.HEARTS));
+        testHand.setHand(cards);
+        System.out.println(testHand);
+        assertEquals(20, testHand.fourOfAKind());
+
+        cards.clear();
+        cards.add(new Card(Value.THREE, Suit.SPADES));
+        cards.add(new Card(Value.ACE, Suit.SPADES));
+        cards.add(new Card(Value.FIVE, Suit.CLUBS));
+        cards.add(new Card(Value.KING, Suit.SPADES));
+        cards.add(new Card(Value.FOUR, Suit.SPADES));
+        cards.add(new Card(Value.FIVE, Suit.DIAMONDS));
+        cards.add(new Card(Value.FIVE, Suit.HEARTS));
+        testHand.setHand(cards);
+        assertEquals(-1, testHand.fourOfAKind());
+
+    }
+
 
 }

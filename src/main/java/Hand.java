@@ -199,6 +199,28 @@ public class Hand {
         return maxSum;
     }
 
+    int fourOfAKind(){
+        int score = -1;
+        for(Card c: this.hand){
+            int count = 1; // Itself
+            for(Card card: this.hand){
+                if(isSameCard(card, c.getValue(), c.getSuit())){
+                    // Skip first one
+                    continue;
+                }
+
+                if(card.getValue().getCardValue() == c.getValue().getCardValue()){
+                    count++;
+                }
+            }
+            if(count == 4 && ( (c.getValue().getCardValue()*4) > score)){
+               score = c.getValue().getCardValue()*4;
+            }
+        }
+
+        return score;
+    }
+
 
     public int calculateHand(Card f1, Card f2, Card f3, Card t1, Card r1){
         // Use only 5 out of 2Hands+5Tables
