@@ -42,13 +42,12 @@ public class CardTest {
         testHand.setHand(testRoyal);
         System.out.println(testHand);
         assertFalse(testHand.checkRoyalFlush());
-
-
-
     }
 
     @Test
     public void testStraightFlush(){
+
     }
+
 
 }
