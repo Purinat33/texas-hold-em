@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class Hand {
 
@@ -155,189 +153,52 @@ public class Hand {
         return false;
     }
 
-    public int checkStraightFlush(){
-        // https://stackoverflow.com/questions/530208/function-to-determine-whether-a-poker-hand-is-a-straight
-        // Create a new arraylist for sorting hand
-        ArrayList<Card> temp = new ArrayList<>(this.hand);
-        Collections.sort(temp);
-        // Ace situation
-        // Sorting by value will make Ace go to the back
-        // We check for 10 J Q K "A"
-        // idx len-5 to -2
-        // if not we check
-        // "A" 2 3 4 5
-        // idx 0 to 3 (Because right now A is currently at the back @ len-1)
 
-        int size = temp.size();
-        Suit suitToCheck = Suit.HEARTS;
-        if(
-                isSameCard(temp.get(size-5), Value.TEN, suitToCheck) &&
-                isSameCard(temp.get(size-4), Value.JACK, suitToCheck) &&
-                isSameCard(temp.get(size-3), Value.QUEEN, suitToCheck) &&
-                isSameCard(temp.get(size-2), Value.KING, suitToCheck) &&
-                isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
-        ){
-            return 99;
-        }
-        suitToCheck = Suit.DIAMONDS;
-        if(
-                isSameCard(temp.get(size-5), Value.TEN, suitToCheck) &&
-                        isSameCard(temp.get(size-4), Value.JACK, suitToCheck) &&
-                        isSameCard(temp.get(size-3), Value.QUEEN, suitToCheck) &&
-                        isSameCard(temp.get(size-2), Value.KING, suitToCheck) &&
-                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
-        ){
-            return 99;
-        }
-        suitToCheck = Suit.SPADES;
-        if(
-                isSameCard(temp.get(size-5), Value.TEN, suitToCheck) &&
-                        isSameCard(temp.get(size-4), Value.JACK, suitToCheck) &&
-                        isSameCard(temp.get(size-3), Value.QUEEN, suitToCheck) &&
-                        isSameCard(temp.get(size-2), Value.KING, suitToCheck) &&
-                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
-        ){
-            return 99;
-        }
-        suitToCheck = Suit.CLUBS;
-        if(
-                isSameCard(temp.get(size-5), Value.TEN, suitToCheck) &&
-                        isSameCard(temp.get(size-4), Value.JACK, suitToCheck) &&
-                        isSameCard(temp.get(size-3), Value.QUEEN, suitToCheck) &&
-                        isSameCard(temp.get(size-2), Value.KING, suitToCheck) &&
-                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
-        ){
-            return 99;
+    public int checkStraightFlush() {
+        // Group cards by suit
+        Map<Suit, ArrayList<Card>> suitGroups = new HashMap<>();
+        for (Card card : this.hand) {
+            suitGroups.computeIfAbsent(card.getSuit(), k -> new ArrayList<>()).add(card);
         }
 
-        // Lower bound
-        suitToCheck = Suit.HEARTS;
-        if(
-                isSameCard(temp.get(0), Value.TWO, suitToCheck) &&
-                        isSameCard(temp.get(1), Value.THREE, suitToCheck) &&
-                        isSameCard(temp.get(2), Value.FOUR, suitToCheck) &&
-                        isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
-                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
-        ){
-            return 15;
-        }
-        suitToCheck = Suit.DIAMONDS;
-        if(
-                isSameCard(temp.get(0), Value.TWO, suitToCheck) &&
-                        isSameCard(temp.get(1), Value.THREE, suitToCheck) &&
-                        isSameCard(temp.get(2), Value.FOUR, suitToCheck) &&
-                        isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
-                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
-        ){
-            return 15;
-        }
-        suitToCheck = Suit.SPADES;
-        if(
-                isSameCard(temp.get(0), Value.TWO, suitToCheck) &&
-                        isSameCard(temp.get(1), Value.THREE, suitToCheck) &&
-                        isSameCard(temp.get(2), Value.FOUR, suitToCheck) &&
-                        isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
-                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
-        ){
-            return 15;
-        }
-        suitToCheck = Suit.CLUBS;
-        if(
-                isSameCard(temp.get(0), Value.TWO, suitToCheck) &&
-                        isSameCard(temp.get(1), Value.THREE, suitToCheck) &&
-                        isSameCard(temp.get(2), Value.FOUR, suitToCheck) &&
-                        isSameCard(temp.get(3), Value.FIVE, suitToCheck) &&
-                        isSameCard(temp.get(size-1), Value.ACE, suitToCheck)
-        ){
-            return 15;
-        }
+        int maxSum = -1;
 
-        //Non Ace case
-        // Check if an array is consecutive logic
-//        int countSF = 1; // If 5 then yes. Started at 1 because the first card of the count is already there
-//        for(int i = 1; i < size; i++){
-//            if(temp.get(i).getValue().getCardValue() == temp.get(i-1).getValue().getCardValue()+1 && temp.get(i).getSuit() == temp.get(i-1).getSuit()){
-//                countSF++;
-//            }
-//            else{
-//                break;
-//            }
-//        }
-//        if(countSF >= 5) return 50;
+        for (Map.Entry<Suit, ArrayList<Card>> entry : suitGroups.entrySet()) {
+            List<Card> suitedCards = entry.getValue();
+            if (suitedCards.size() < 5) continue;
 
-        // Go backward for higher to lower score
-        // idx Size-1 to Size-5
-        // idx Size-2 to Size-6
-        // idx Size-3 to Size-7
-        // Can probably do it manually
-        // Return sum as score
-        // n*(n+1)/2
-        // TODO: Implement this ^
-        int sum=0;
-        int countSF = 0;
-        for(int i = size-1; i >= size-5; i--){
-            if(i == size-1){
-                sum += temp.get(i).getValue().getCardValue();
-                countSF+=1;
-            }
-            else{
-                if((temp.get(i).getValue().getCardValue() == temp.get(i-1).getValue().getCardValue()+1) && (temp.get(i).getSuit() == temp.get(i-1).getSuit())){
-                    sum += temp.get(i).getValue().getCardValue();
-                    countSF+=1;
+            // Collect values and allow low-Ace as 1 if Ace is present
+            Set<Integer> values = new HashSet<>();
+            for (Card card : suitedCards) {
+                values.add(card.getValue().getCardValue());
+                if (card.getValue() == Value.ACE) {
+                    values.add(1);  // Low-Ace case
                 }
-                else{
-                    break;
+            }
+
+            // Check for straight flush from highest down to lowest
+            for (int high = 14; high >= 5; high--) {
+                boolean isStraight = true;
+                int sum = 0;
+
+                for (int i = 0; i < 5; i++) {
+                    if (!values.contains(high - i)) {
+                        isStraight = false;
+                        break;
+                    }
+                    sum += high - i;
+                }
+
+                if (isStraight) {
+                    maxSum = Math.max(maxSum, sum);
+                    break; // Only need the max straight flush for this suit
                 }
             }
         }
-        if(countSF==5){
-            return sum;
-        }
 
-        countSF=0;
-        sum=0;
-        for(int i = size-2; i >= size-6; i--){
-            if(i == size-2){
-                sum += temp.get(i).getValue().getCardValue();
-                countSF+=1;
-            }
-            else{
-                if((temp.get(i).getValue().getCardValue() == temp.get(i-1).getValue().getCardValue()+1) && (temp.get(i).getSuit() == temp.get(i-1).getSuit())){
-                    sum += temp.get(i).getValue().getCardValue();
-                    countSF+=1;
-                }
-                else{
-                    break;
-                }
-            }
-        }
-        if(countSF==5){
-            return sum;
-        }
-
-        countSF=0;
-        sum=0;
-        for(int i = size-3; i >= size-7; i--){
-            if(i == size-3){
-                sum += temp.get(i).getValue().getCardValue();
-                countSF+=1;
-            }
-            else{
-                if((temp.get(i).getValue().getCardValue() == temp.get(i-1).getValue().getCardValue()+1) && (temp.get(i).getSuit() == temp.get(i-1).getSuit())){
-                    sum += temp.get(i).getValue().getCardValue();
-                    countSF+=1;
-                }
-                else{
-                    break;
-                }
-            }
-        }
-        if(countSF==5){
-            return sum;
-        }
-
-        return -1;
+        return maxSum;
     }
+
 
     public int calculateHand(Card f1, Card f2, Card f3, Card t1, Card r1){
         // Use only 5 out of 2Hands+5Tables
