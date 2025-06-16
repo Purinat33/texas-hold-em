@@ -176,8 +176,8 @@ public class Hand {
                 }
             }
 
-            // Check for straight flush from highest down to lowest
-            for (int high = 14; high >= 5; high--) {
+            // Check for straight flush from the highest down to lowest (Started from 13 as to not count a royal flush)
+            for (int high = 13; high >= 5; high--) {
                 boolean isStraight = true;
                 int sum = 0;
 

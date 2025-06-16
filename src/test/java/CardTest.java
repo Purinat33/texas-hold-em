@@ -88,6 +88,21 @@ public class CardTest {
         testHand.setHand(sf);
         System.out.println(testHand);
         assertEquals(25, testHand.checkStraightFlush());
+
+        // Royal Flush case, should be -1 for this function
+        sf.clear();
+        sf.add(new Card(Value.ACE, Suit.DIAMONDS));
+        sf.add(new Card(Value.KING, Suit.DIAMONDS));
+        sf.add(new Card(Value.QUEEN, Suit.DIAMONDS));
+        sf.add(new Card(Value.TEN, Suit.DIAMONDS));
+        sf.add(new Card(Value.JACK, Suit.DIAMONDS));
+        sf.add(new Card(Value.THREE, Suit.DIAMONDS));
+        sf.add(new Card(Value.JACK, Suit.CLUBS));
+
+        testHand.setHand(sf);
+        System.out.println(testHand);
+        assertEquals(-1, testHand.checkStraightFlush());
+
     }
 
     @Test
